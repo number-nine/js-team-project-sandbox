@@ -6,8 +6,12 @@ class BooksState {
   totalPages = null;
   currentPage = 1;
 
-  isLoading = false;
+  #isLoading = false;
   isError = false;
+
+  set isLoading (value) {
+    this.#isLoading = value;
+  }
 }
 
 export const state = new BooksState();
