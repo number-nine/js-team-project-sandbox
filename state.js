@@ -5,13 +5,26 @@ class BooksState {
   error = null;
   totalPages = null;
   currentPage = 1;
+  isThemeDark = false;
 
-  #isLoading = false;
+  isLoading = false;
   isError = false;
 
-  set isLoading (value) {
-    this.#isLoading = value;
-  }
+  user = {
+    username: "",
+    isLoggedIn: false,
+  };
+
+  switchTheme = () => {
+    this.isThemeDark = !this.isThemeDark;
+  };
+
+  logIn = (username) => {
+    this.user = { username, isLoggedIn: true };
+  };
+  logOut = () => {
+    this.user = { username: "", isLoggedIn: false };
+  };
 }
 
 export const state = new BooksState();

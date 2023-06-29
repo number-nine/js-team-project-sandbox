@@ -13,9 +13,10 @@ axios.defaults.baseURL = API_ENDPOINTS.baseUrl;
 const getCategoryList = async () => {
   try {
     const result = await axios.get(API_ENDPOINTS.categoryList);
+    console.log(result);
     return result.data;
   } catch (error) {
-    console.log(error);
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -24,7 +25,7 @@ const getTopBooks = async () => {
     const result = await axios.get(API_ENDPOINTS.topBooks);
     return result.data;
   } catch (error) {
-    console.log(error);
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -35,7 +36,7 @@ const getBooksByCategory = async (category) => {
     });
     return result.data;
   } catch (error) {
-    console.log(error);
+    throw new Error(error.response.data.message);
   }
 };
 
@@ -44,7 +45,7 @@ const getBookById = async (id) => {
     const result = await axios.get(API_ENDPOINTS.book + id);
     return result.data;
   } catch (error) {
-    console.log(error);
+    throw new Error(error.response.data.message);
   }
 };
 

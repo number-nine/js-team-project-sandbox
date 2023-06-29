@@ -5454,16 +5454,17 @@ var getCategoryList = /*#__PURE__*/function () {
           return _axios.default.get(API_ENDPOINTS.categoryList);
         case 3:
           result = _context.sent;
+          console.log(result);
           return _context.abrupt("return", result.data);
-        case 7:
-          _context.prev = 7;
+        case 8:
+          _context.prev = 8;
           _context.t0 = _context["catch"](0);
-          console.log(_context.t0);
-        case 10:
+          throw new Error(_context.t0.response.data.message);
+        case 11:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 8]]);
   }));
   return function getCategoryList() {
     return _ref.apply(this, arguments);
@@ -5484,7 +5485,7 @@ var getTopBooks = /*#__PURE__*/function () {
         case 7:
           _context2.prev = 7;
           _context2.t0 = _context2["catch"](0);
-          console.log(_context2.t0);
+          throw new Error(_context2.t0.response.data.message);
         case 10:
         case "end":
           return _context2.stop();
@@ -5514,7 +5515,7 @@ var getBooksByCategory = /*#__PURE__*/function () {
         case 7:
           _context3.prev = 7;
           _context3.t0 = _context3["catch"](0);
-          console.log(_context3.t0);
+          throw new Error(_context3.t0.response.data.message);
         case 10:
         case "end":
           return _context3.stop();
@@ -5540,7 +5541,7 @@ var getBookById = /*#__PURE__*/function () {
         case 7:
           _context4.prev = 7;
           _context4.t0 = _context4["catch"](0);
-          console.log(_context4.t0);
+          throw new Error(_context4.t0.response.data.message);
         case 10:
         case "end":
           return _context4.stop();
@@ -5575,21 +5576,127 @@ function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key i
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 var BooksState = /*#__PURE__*/_createClass(function BooksState() {
+  var _this = this;
   _classCallCheck(this, BooksState);
   _defineProperty(this, "data", []);
   _defineProperty(this, "error", null);
   _defineProperty(this, "totalPages", null);
   _defineProperty(this, "currentPage", 1);
+  _defineProperty(this, "isThemeDark", false);
   _defineProperty(this, "isLoading", false);
   _defineProperty(this, "isError", false);
+  _defineProperty(this, "user", {
+    username: "",
+    isLoggedIn: false
+  });
+  _defineProperty(this, "switchTheme", function () {
+    _this.isThemeDark = !_this.isThemeDark;
+  });
+  _defineProperty(this, "logIn", function (username) {
+    _this.user = {
+      username: username,
+      isLoggedIn: true
+    };
+  });
+  _defineProperty(this, "logOut", function () {
+    _this.user = {
+      username: "",
+      isLoggedIn: false
+    };
+  });
 });
 var state = new BooksState();
 exports.state = state;
-},{}],"index.js":[function(require,module,exports) {
+},{}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+  return bundleURL;
+}
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+  return '/';
+}
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+function updateLink(link) {
+  var newLink = link.cloneNode();
+  newLink.onload = function () {
+    link.remove();
+  };
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+var cssTimeout = null;
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+    cssTimeout = null;
+  }, 50);
+}
+module.exports = reloadCSS;
+},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"loader/progress-waves.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"loader/loader.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.openLoader = exports.closeLoader = void 0;
+require("./progress-waves.css");
+//Для роботи потрібно вставити в розмітку, наприклад index.html,
+// порожній div з класом modal - root
+// Потім імпортувати методи з цього файлу та викликати, де треба,
+// наприклад на івент, або на просто на старт завантаження
+
+// import { openLoader, closeLoader } from "./loader/loader";
+
+// const openModalButtonRef = document.querySelector(".open-modal");
+// openModalButtonRef.addEventListener("click", openLoader);
+
+var spinnerMarkup = '<div class="loader-modal in-progress"></div > ';
+var openLoader = function openLoader() {
+  var modalPortal = document.querySelector(".modal-root");
+  modalPortal.innerHTML = spinnerMarkup;
+};
+exports.openLoader = openLoader;
+var closeLoader = function closeLoader() {
+  var modalPortal = document.querySelector(".modal-root");
+  modalPortal.innerHTML = '';
+};
+exports.closeLoader = closeLoader;
+},{"./progress-waves.css":"loader/progress-waves.css"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _booksApi = require("./booksApi");
 var _state = require("./state");
+var _loader = require("./loader/loader");
 console.log("hello");
 var booksApi = (0, _booksApi.useBooksApi)();
 var handleOnPress = function handleOnPress(e) {
@@ -5602,20 +5709,11 @@ var handleOnPress = function handleOnPress(e) {
   }).catch(function (err) {
     _state.state.error = err;
     _state.state.isError = true;
+    console.log(err);
   }).finally(function () {
     _state.state.isLoading = false;
   });
 };
-var handleOpenModal = function handleOpenModal() {
-  var modalPortal = document.querySelector(".modal-root");
-  var innerModal = '<div class="modal">11</div>';
-  modalPortal.innerHTML = innerModal;
-};
-var ButtonRef = document.querySelector(".get-button");
-var ListRef = document.querySelector(".category-list");
-var openModalButtonRef = document.querySelector(".open-modal");
-ButtonRef.addEventListener("click", handleOnPress);
-openModalButtonRef.addEventListener('click', handleOpenModal);
 var parceCategoryList = function parceCategoryList(list) {
   var innerList = list.map(function (_ref) {
     var list_name = _ref.list_name;
@@ -5624,7 +5722,22 @@ var parceCategoryList = function parceCategoryList(list) {
   console.log(innerList);
   ListRef.innerHTML = innerList;
 };
-},{"./booksApi":"booksApi.js","./state":"state.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+// const innerModal = () => {
+//   return '<div class="modal in-progress"></div > ';
+// }
+
+// const handleOpenModal = () => {
+//     const modalPortal = document.querySelector(".modal-root");
+//     modalPortal.innerHTML = innerModal();
+// }
+
+var ButtonRef = document.querySelector(".get-button");
+var ListRef = document.querySelector(".category-list");
+var openModalButtonRef = document.querySelector(".open-modal");
+ButtonRef.addEventListener("click", handleOnPress);
+openModalButtonRef.addEventListener('click', _loader.openLoader);
+},{"./booksApi":"booksApi.js","./state":"state.js","./loader/loader":"loader/loader.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -5649,7 +5762,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57359" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59923" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
