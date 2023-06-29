@@ -3,54 +3,36 @@ import { state } from "./state";
 
 import { openLoader, closeLoader } from "./loader/loader";
 
+import firebase from "firebase/compat/app";
+import * as firebaseui from "firebaseui";
+import "firebaseui/dist/firebaseui.css";
+
+import { useUserAuth } from "./authApi";
 
 console.log("hello");
+const { login, logout, register } = useUserAuth();
 
 const booksApi = useBooksApi();
 
-const handleOnPress = (e) => {
+const handleLogin = (e) => {
   e.preventDefault();
-
-  state.isLoading = true;
-  state.isError = false;
-
-  booksApi
-    .getCategoryList()
-    .then((res) => {
-      state.data = res;
-      parceCategoryList(res);
-    })
-    .catch((err) => {
-      state.error = err;
-        state.isError = true;
-        console.log(err);
-    })
-    .finally(() => {
-      state.isLoading = false;
-    });
+  login({ username: "vasya@mail.com", password: "123456" });
 };
 
-const parceCategoryList = (list) => {
-  const innerList = list
-    .map(({ list_name }) => `<li>${list_name}</li>`)
-    .join("");
-  console.log(innerList);
-  ListRef.innerHTML = innerList;
+const handleLogout = (e) => {
+  e.preventDefault();
+  logout();
 };
 
-// const innerModal = () => {
-//   return '<div class="modal in-progress"></div > ';
-// }
+const handleRegister = (e) => {
+  e.preventDefault();
+  register({ username: "vasya@mail.com", password: "123456" });
+};
 
-// const handleOpenModal = () => {
-//     const modalPortal = document.querySelector(".modal-root");
-//     modalPortal.innerHTML = innerModal();
-// }
+const loginButtonRef = document.querySelector(".login-button");
+const logoutButtonRef = document.querySelector(".logout-button");
+const registerButtonRef = document.querySelector(".register-button");
 
-const ButtonRef = document.querySelector(".get-button");
-const ListRef = document.querySelector(".category-list");
-const openModalButtonRef = document.querySelector(".open-modal");
-ButtonRef.addEventListener("click", handleOnPress);
-openModalButtonRef.addEventListener('click', openLoader)
-
-
+loginButtonRef.addEventListener("click", handleLogin);
+logoutButtonRef.addEventListener("click", handleLogout);
+registerButtonRef.addEventListener("click", handleRegister);
