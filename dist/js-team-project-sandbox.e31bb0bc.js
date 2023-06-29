@@ -5561,7 +5561,16 @@ var useBooksApi = function useBooksApi() {
   };
 };
 exports.useBooksApi = useBooksApi;
-},{"axios":"node_modules/axios/index.js"}],"state.js":[function(require,module,exports) {
+},{"axios":"node_modules/axios/index.js"}],"firebase/modal-auth.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.modalAuth = void 0;
+var modalAuth = function modalAuth() {};
+exports.modalAuth = modalAuth;
+},{}],"state.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35535,7 +35544,7 @@ var version = "9.23.0";
  * limitations under the License.
  */
 (0, _app.registerVersion)(name, version, 'app');
-},{"@firebase/app":"node_modules/@firebase/app/dist/esm/index.esm2017.js"}],"firebaseCredentials.js":[function(require,module,exports) {
+},{"@firebase/app":"node_modules/@firebase/app/dist/esm/index.esm2017.js"}],"firebase/firebaseCredentials.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35560,7 +35569,7 @@ var firebaseConfig = {
 // Initialize Firebase
 var app = (0, _app.initializeApp)(firebaseConfig);
 exports.app = app;
-},{"firebase/app":"node_modules/firebase/app/dist/esm/index.esm.js"}],"authState.js":[function(require,module,exports) {
+},{"firebase/app":"node_modules/firebase/app/dist/esm/index.esm.js"}],"firebase/authState.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35590,7 +35599,7 @@ var AuthState = /*#__PURE__*/_createClass(function AuthState() {
 
 var authState = new AuthState();
 exports.authState = authState;
-},{}],"authApi.js":[function(require,module,exports) {
+},{}],"firebase/authApi.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35600,7 +35609,7 @@ exports.useUserAuth = void 0;
 var _auth = require("firebase/auth");
 var _notiflixNotifyAio = require("notiflix/build/notiflix-notify-aio");
 var _firebaseCredentials = require("./firebaseCredentials");
-var _loader = require("./loader/loader");
+var _loader = require("../loader/loader");
 var _authState = require("./authState");
 var auth = (0, _auth.getAuth)(_firebaseCredentials.app);
 var login = function login(_ref) {
@@ -35608,7 +35617,7 @@ var login = function login(_ref) {
     password = _ref.password;
   (0, _loader.openLoader)();
   (0, _auth.signInWithEmailAndPassword)(auth, username, password).then(function (res) {
-    _notiflixNotifyAio.Notify.info(isLoggedIn());
+    _notiflixNotifyAio.Notify.info(isLoggedIn().toString());
     //   console.log(isLoggedIn());
     console.log(res);
   }).catch(function (err) {
@@ -35623,19 +35632,17 @@ var logout = function logout() {
   }).catch(function (err) {
     _notiflixNotifyAio.Notify.failure(err.message);
   }).finally(_loader.closeLoader);
-  ;
 };
 var register = function register(_ref2) {
   var username = _ref2.username,
     password = _ref2.password;
   (0, _loader.openLoader)();
   (0, _auth.createUserWithEmailAndPassword)(auth, username, password).then(function (res) {
-    console.log(isLoggedIn());
+    console.log("isLoggedIn().toString()");
     console.log(res);
   }).catch(function (err) {
     _notiflixNotifyAio.Notify.failure(err.message);
   }).finally(_loader.closeLoader);
-  ;
 };
 var isLoggedIn = function isLoggedIn() {
   return Boolean(auth.currentUser);
@@ -35648,47 +35655,18 @@ var useUserAuth = function useUserAuth() {
     isLoggedIn: isLoggedIn
   };
 };
-
-// export const authProvider = () => {
-//     const auth = getAuth(app);
-
-//     console.log(auth.currentUser);
-
-// signInWithCredential(auth)
-
-// signInWithEmailAndPassword(auth, 'test@test.com', 'test12345')
-//   .then((res) => {
-//     console.log(res);
-//   })
-//   .catch((err) => {
-//     console.log(err.message);
-//   });
-
-// createUserWithEmailAndPassword(auth, "new@user.com", "pass123")
-//   .then((res) => {
-//     console.log(res);
-//   })
-//   .catch((err) => {
-//     console.log(err.message);
-//   });
-
-// signOut(auth);
-
-// auth(auth);
-
-//   return "<div>user</div>";
-// };
 exports.useUserAuth = useUserAuth;
-},{"firebase/auth":"node_modules/firebase/auth/dist/esm/index.esm.js","notiflix/build/notiflix-notify-aio":"node_modules/notiflix/build/notiflix-notify-aio.js","./firebaseCredentials":"firebaseCredentials.js","./loader/loader":"loader/loader.js","./authState":"authState.js"}],"index.js":[function(require,module,exports) {
+},{"firebase/auth":"node_modules/firebase/auth/dist/esm/index.esm.js","notiflix/build/notiflix-notify-aio":"node_modules/notiflix/build/notiflix-notify-aio.js","./firebaseCredentials":"firebase/firebaseCredentials.js","../loader/loader":"loader/loader.js","./authState":"firebase/authState.js"}],"index.js":[function(require,module,exports) {
 "use strict";
 
 var _booksApi = require("./booksApi");
+var _modalAuth = require("./firebase/modal-auth");
 var _state = require("./state");
 var _loader = require("./loader/loader");
 var _app = _interopRequireDefault(require("firebase/compat/app"));
 var firebaseui = _interopRequireWildcard(require("firebaseui"));
 require("firebaseui/dist/firebaseui.css");
-var _authApi = require("./authApi");
+var _authApi = require("./firebase/authApi");
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -35716,13 +35694,18 @@ var handleRegister = function handleRegister(e) {
     password: "123456"
   });
 };
+var handleOpenModal = function handleOpenModal(e) {
+  e.preventDefault();
+};
 var loginButtonRef = document.querySelector(".login-button");
 var logoutButtonRef = document.querySelector(".logout-button");
 var registerButtonRef = document.querySelector(".register-button");
+var modalLoginButtonRef = document.querySelector(".modal-login-button");
 loginButtonRef.addEventListener("click", handleLogin);
 logoutButtonRef.addEventListener("click", handleLogout);
 registerButtonRef.addEventListener("click", handleRegister);
-},{"./booksApi":"booksApi.js","./state":"state.js","./loader/loader":"loader/loader.js","firebase/compat/app":"node_modules/firebase/compat/app/dist/esm/index.esm.js","firebaseui":"node_modules/firebaseui/dist/esm.js","firebaseui/dist/firebaseui.css":"node_modules/firebaseui/dist/firebaseui.css","./authApi":"authApi.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+modalLoginButtonRef.addEventListener("click", handleOpenModal);
+},{"./booksApi":"booksApi.js","./firebase/modal-auth":"firebase/modal-auth.js","./state":"state.js","./loader/loader":"loader/loader.js","firebase/compat/app":"node_modules/firebase/compat/app/dist/esm/index.esm.js","firebaseui":"node_modules/firebaseui/dist/esm.js","firebaseui/dist/firebaseui.css":"node_modules/firebaseui/dist/firebaseui.css","./firebase/authApi":"firebase/authApi.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
