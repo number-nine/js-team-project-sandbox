@@ -1,7 +1,8 @@
 import { useBooksApi } from "./booksApi";
 import { modalAuth} from './firebase/modal-auth';
 import { state } from "./state";
-
+import { drawSignupModal } from "./modal-auth/modalAuthModal";
+ 
 import { openLoader, closeLoader } from "./loader/loader";
 
 import firebase from "firebase/compat/app";
@@ -34,13 +35,31 @@ const handleOpenModal = (e) => {
   e.preventDefault();
 };
 
-const loginButtonRef = document.querySelector(".login-button");
-const logoutButtonRef = document.querySelector(".logout-button");
-const registerButtonRef = document.querySelector(".register-button");
-const modalLoginButtonRef = document.querySelector(".modal-login-button");
+const handleOpenSingUpModal = (e) => {
+  e.preventDefault();
 
-loginButtonRef.addEventListener("click", handleLogin);
-logoutButtonRef.addEventListener("click", handleLogout);
-registerButtonRef.addEventListener("click", handleRegister);
-modalLoginButtonRef.addEventListener("click", handleOpenModal);
+  const modalRootRef = document.querySelector(".auth-modal-root");
+  modalRootRef.innerHTML = drawSignupModal("light");
 
+  const closeModalRef = document.querySelector(".close-auth");
+  closeModalRef.addEventListener('click', handleCloseAuthModal)
+}
+
+const handleCloseAuthModal = () => {
+  const modalRootRef = document.querySelector(".auth-modal-root");
+  modalRootRef.innerHTML = '';
+}
+
+const modalAuthButtonRef = document.querySelector(".modal-auth-button");
+modalAuthButtonRef.addEventListener("click", handleOpenSingUpModal);
+
+
+// loginButtonRef.addEventListener("click", handleLogin);
+// logoutButtonRef.addEventListener("click", handleLogout);
+// registerButtonRef.addEventListener("click", handleRegister);
+// modalLoginButtonRef.addEventListener("click", handleOpenModal);
+
+// const loginButtonRef = document.querySelector(".login-button");
+// const logoutButtonRef = document.querySelector(".logout-button");
+// const registerButtonRef = document.querySelector(".register-button");
+// const modalLoginButtonRef = document.querySelector(".modal-login-button");
