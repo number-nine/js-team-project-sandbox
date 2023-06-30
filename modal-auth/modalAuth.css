@@ -31,8 +31,11 @@
 }
 
 .modal-auth {
+    margin-top: 15%;
+    padding-top: 24px;
+    padding-bottom: 40px;
     width: 579px;
-    height: 516px;
+
 
     background-color: var(--main-background);
 
@@ -40,11 +43,10 @@
     border-radius: 16px;
     box-shadow: 2px 2px 5px 0px var(--shadow);
 
-    transform: translate(50%, 50%);
+    transform: translateX(50%);
 }
 
 .close-auth {
-    margin-top: 24px;
     margin-left: auto;
     margin-right: 24px;
 

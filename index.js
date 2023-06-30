@@ -1,8 +1,8 @@
 import { useBooksApi } from "./booksApi";
-import { modalAuth} from './firebase/modal-auth';
+import { modalAuth } from "./firebase/modal-auth";
 import { state } from "./state";
-import { drawSignupModal } from "./modal-auth/modalAuthModal";
- 
+import { composeSignupModal } from "./modal-auth/authModal";
+
 import { openLoader, closeLoader } from "./loader/loader";
 
 import firebase from "firebase/compat/app";
@@ -10,6 +10,8 @@ import * as firebaseui from "firebaseui";
 import "firebaseui/dist/firebaseui.css";
 
 import { useUserAuth } from "./firebase/authApi";
+
+import { initAuth } from "./modal-auth/eventsProcessor";
 
 console.log("hello");
 const { login, logout, register } = useUserAuth();
@@ -35,24 +37,34 @@ const handleOpenModal = (e) => {
   e.preventDefault();
 };
 
-const handleOpenSingUpModal = (e) => {
-  e.preventDefault();
+initAuth();
 
-  const modalRootRef = document.querySelector(".auth-modal-root");
-  modalRootRef.innerHTML = drawSignupModal("light");
+// const handleSignModal = (e) => {
+//   e.preventDefault();
+//   onModalOpen();
+  // console.log(e.target.value);
 
-  const closeModalRef = document.querySelector(".close-auth");
-  closeModalRef.addEventListener('click', handleCloseAuthModal)
-}
+  // const modalRootRef = document.querySelector(".auth-modal-root");
+  // modalRootRef.innerHTML = composeSignupModal("light");
 
-const handleCloseAuthModal = () => {
-  const modalRootRef = document.querySelector(".auth-modal-root");
-  modalRootRef.innerHTML = '';
-}
+  // const closeModalRef = document.querySelector(".close-auth");
+  // const submitModalRef = document.querySelector(".submit-auth");
+  // const switchAuthRef = document.querySelector(".sigh-auth");
 
-const modalAuthButtonRef = document.querySelector(".modal-auth-button");
-modalAuthButtonRef.addEventListener("click", handleOpenSingUpModal);
+  // closeModalRef.addEventListener("click", handleCloseAuthModal);
+  // switchAuthRef.addEventListener("click", switchAuth);
 
+// };
+
+// const switchAuth = (e) => {};
+
+// const handleCloseAuthModal = () => {
+//   const modalRootRef = document.querySelector(".auth-modal-root");
+//   modalRootRef.innerHTML = "";
+// };
+
+// const modalAuthButtonRef = document.querySelector(".modal-auth-button");
+// modalAuthButtonRef.addEventListener("click", handleSignModal);
 
 // loginButtonRef.addEventListener("click", handleLogin);
 // logoutButtonRef.addEventListener("click", handleLogout);
