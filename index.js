@@ -1,16 +1,17 @@
-// import { subscribe, fire } from "./subscriber";
+import { useSubscribeUserAuthChanges, useFireUserAuthChanges } from "./authChangesSubscriber";
 
-const eventButtonRef = document.querySelector(".mybutton");
-console.log(eventButtonRef);
-eventButtonRef.addEventListener("click", myEvent);
+const { subscribeUserLoggedIn, subscribeUserLoggedOut } = useSubscribeUserAuthChanges();
 
-const myEvent = (e) => {
-  e.prevetDefault();
-  console.log('object');
-  // fire();
+const { fireLoggedIn, fireLoggedOut } = useFireUserAuthChanges()
+
+const myButtonEvent = () => {
+  console.log("do something");
+  fireLoggedIn();
 };
 
-// console.log("hello");
+const eventButtonRef = document.querySelector(".mybutton");
+eventButtonRef.addEventListener("click", myButtonEvent);
+
 
 const func1 = () => {
   console.log('i am finc2');
@@ -21,8 +22,11 @@ const func2 = () => {
   console.log("i am func2");
 };
 
+const val1 = 5;
 
-// subscribe(func1);
-// subscribe(func2);
+
+subscribeUserLoggedIn(func1);
+subscribeUserLoggedIn(func2);
+subscribeUserLoggedIn(val1);
 
 
